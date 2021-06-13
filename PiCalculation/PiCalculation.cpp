@@ -8,24 +8,9 @@
 using namespace std;
 using namespace std::chrono;
 static long long num_steps = 10000000000L;
-
+                              
 
 #define NUM_THREADS 256
-
-//Sequential pi calculation
-double piSequency()
-{
-	double result;
-	double factor = 1.0L;
-	double sum = 0.0L;
-	for (long long i = 0; i < num_steps; i++){
-		factor = (i % 2 == 0 ? 1.0L : -1.0L);
-		sum += factor / (2L * i + 1L);
-	}
-	result = 4.0L * sum;
-	return result;
-}
-
 //Optimized pi calculation in multy threads
 double piMultiThreadNonOptimized()
 {
@@ -47,6 +32,20 @@ double piMultiThreadNonOptimized()
 		sumF += sum[i];
 	}
 	result = 4.0L * sumF;
+	return result;
+}
+
+//Sequential pi calculation
+double piSequency()
+{
+	double result;
+	double factor = 1.0L;
+	double sum = 0.0L;
+	for (long long i = 0; i < num_steps; i++){
+		factor = (i % 2 == 0 ? 1.0L : -1.0L);
+		sum += factor / (2L * i + 1L);
+	}
+	result = 4.0L * sum;
 	return result;
 }
 
