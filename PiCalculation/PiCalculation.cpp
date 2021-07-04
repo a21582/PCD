@@ -10,8 +10,9 @@ using namespace std::chrono;
 static long long num_steps = 10000000000L;
                               
 
-#define NUM_THREADS 256
-//Optimized pi calculation in multy threads
+#define NUM_THREADS 2
+
+//Non Optimized pi calculation in multy threads
 double piMultiThreadNonOptimized()
 {
 	int nthreads; 
@@ -19,6 +20,7 @@ double piMultiThreadNonOptimized()
 	double sumF = 0.0L;
 	double result;
 
+	steady_clock::time_point beginMultiThread = steady_clock::now();
 #pragma omp parallel num_threads(NUM_THREADS)
 	{
 		long long i;
@@ -27,6 +29,8 @@ double piMultiThreadNonOptimized()
 			sum[id] += (i % 2 == 0 ? 1.0L : -1.0L) / (2L * i + 1L);
 		}
 	}
+	steady_clock::time_point endMultiThread = steady_clock::now();
+	cout << "Elapse Thread Time:" << duration_cast<milliseconds>(endMultiThread - beginMultiThread).count() << "[ms]" << endl;
 
 	for (int i = 0; i < NUM_THREADS; i++) {
 		sumF += sum[i];
@@ -79,6 +83,7 @@ int main()
 	//double pi = piSequency();
 
 	cout << "Pi value:" << setprecision(16) << pi <<  endl;
+
 	cout << "Interactions:" << num_steps << endl;
 	steady_clock::time_point endFunction = steady_clock::now();
 	cout << "Elapse Function Time:" << duration_cast<milliseconds>(endFunction - beginFunction).count() << "[ms]" << endl;
